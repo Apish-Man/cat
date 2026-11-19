@@ -21,4 +21,7 @@ done
 mv "$staging/macos-arm64.zip" build/godot-templates/macos-arm64.zip
 "$godot_bin" --headless --path mac --import
 "$godot_bin" --headless --path mac --export-release "macOS arm64" ../dist/mac/CatMate.app
-codesign --verify --deep --strict dist/mac/CatMate.app
+app=dist/mac/CatMate.app
+"$godot_bin" --headless --path mac --script "$root/tools/godot_notices.gd" -- "$root/$app/Contents/Resources/Godot-LICENSE.txt"
+codesign --force --sign - "$app"
+codesign --verify --deep --strict "$app"

@@ -40,6 +40,6 @@ func write() -> Error:
 	config.set_value("preview", "eco", eco)
 	config.set_value("preview", "screen", screen)
 	config.set_value("preview", "position", relative)
-	var temporary := path + ".tmp"
+	var temporary := "%s.%d.tmp" % [path, OS.get_process_id()]
 	var err := config.save(temporary)
 	return DirAccess.rename_absolute(temporary, path) if err == OK else err

@@ -38,9 +38,12 @@ func _ready() -> void:
 	_place()
 	_install_menu()
 	get_window().focus_exited.connect(_cancel_capture)
+	get_window().mouse_exited.connect(func(): entered_head = false)
 	current_layout = _layout()
 	ready_for_input = true
 	RenderingServer.frame_post_draw.connect(_refresh_outline)
+	if $Character.has_method("hit_outline"):
+		_refresh_outline()
 
 func _resize() -> void:
 	var extent := minf(BASE_SIZE * prefs.scale_value, minf(desktop.usable(screen_index).size.x, desktop.usable(screen_index).size.y))
@@ -93,6 +96,11 @@ func _menu_action(id: int) -> void:
 	_save()
 
 func _process(dt: float) -> void:
+	if not DisplayServer.window_can_draw():
+		if motion.pressed:
+			_cancel_capture()
+		Engine.max_fps = 4
+		return
 	since_layout += dt
 	if since_layout >= 1.0:
 		since_layout = 0.0
@@ -104,9 +112,12 @@ func _process(dt: float) -> void:
 			_resize()
 			motion.set_bounds(_bounds())
 	motion.advance(dt)
+	if $Character.has_method("pose"):
+		var action: StringName = [&"idle", &"walk", &"petted", &"held"][motion.state]
+		$Character.pose(action, motion.speed / Motion.SPEED, dt)
 	if motion.facing != last_facing:
 		last_facing = motion.facing
-		$Character.scale.x = last_facing
+		$Character.basis = Basis.from_scale(Vector3(last_facing, 1, 1))
 		outline_dirty = true
 	_place()
 	var walking := motion.state == Motion.State.WALK or motion.pressed
@@ -120,6 +131,11 @@ func _layout() -> Array:
 
 func _refresh_outline() -> void:
 	if not outline_dirty or motion.pressed:
+		return
+	if $Character.has_method("hit_outline"):
+		outline = $Character.hit_outline(Vector2(get_window().size), last_facing)
+		get_window().mouse_passthrough_polygon = outline
+		outline_dirty = false
 		return
 	var image := get_viewport().get_texture().get_image()
 	if not image or image.is_empty():

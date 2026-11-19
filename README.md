@@ -51,7 +51,7 @@ Windows 默认存档路径为 `%LOCALAPPDATA%\CatMate\save.json`，日志在同�
 
 维护者可参考[分支、版本标签和 GitHub 发布流程](docs/releasing.md)。本版的下载与升级说明见 [v1.2.0 发布说明](docs/releases/v1.2.0.md)。
 
-后续开发面向 Apple Silicon 上的 3D 桌宠。设计与交付范围见[项目架构说明](docs/architecture.md)和[首个 Mac 预览版说明草案](docs/releases/v1.3.0-alpha.1.md)。
+后续开发面向 Apple Silicon 上的 3D 桌宠。开发排期与验收节点见[首个 Mac 预览版开发计划](docs/development-plan-v1.3.0-alpha.1.md)，设计与交付范围见[项目架构说明](docs/architecture.md)和[预览版说明草案](docs/releases/v1.3.0-alpha.1.md)。
 
 在 Windows x64 上，于项目根目录运行以下命令。`build.cmd` 会安装开发依赖，并用 PyInstaller 生成 `dist\CatMate\CatMate.exe`。
 

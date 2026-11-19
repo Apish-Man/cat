@@ -1,0 +1,23 @@
+{
+  "platform": "windows",
+  "cpu_basis": "one logical core",
+  "logical_cpus": 16,
+  "seconds_per_scenario": 4.0,
+  "scenarios": {
+    "walking_hidden_panel": {
+      "wall_seconds": 4.0,
+      "cpu_percent_one_core": 6.25,
+      "working_set_mib": 78.95,
+      "private_mib": 50.84,
+      "pet_paints": 240,
+      "toy_paints": 0,
+      "ticks": 240,
+      "mask_rebuilds": 0,
+      "panel_refreshes": 0,
+      "paint_interval_p50_ms": 16.499,
+      "paint_interval_p95_ms": 18.815,
+      "paint_interval_max_ms": 20.715
+    }
+  },
+  "errors": []
+}

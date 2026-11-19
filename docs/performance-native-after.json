@@ -1,0 +1,52 @@
+{
+  "platform": "windows",
+  "cpu_basis": "one logical core",
+  "seconds_per_scenario": 5.0,
+  "scenarios": {
+    "sleep_hidden_panel": {
+      "wall_seconds": 5.0,
+      "cpu_percent_one_core": 0.0,
+      "working_set_mib": 81.29,
+      "private_mib": 44.88,
+      "pet_paints": 40,
+      "toy_paints": 0,
+      "ticks": 40,
+      "mask_rebuilds": 0,
+      "panel_refreshes": 0
+    },
+    "walking_hidden_panel": {
+      "wall_seconds": 4.999,
+      "cpu_percent_one_core": 5.627,
+      "working_set_mib": 87.57,
+      "private_mib": 52.36,
+      "pet_paints": 312,
+      "toy_paints": 0,
+      "ticks": 312,
+      "mask_rebuilds": 0,
+      "panel_refreshes": 0
+    },
+    "laser_interaction": {
+      "wall_seconds": 4.996,
+      "cpu_percent_one_core": 14.074,
+      "working_set_mib": 88.64,
+      "private_mib": 53.11,
+      "pet_paints": 311,
+      "toy_paints": 311,
+      "ticks": 311,
+      "mask_rebuilds": 6,
+      "panel_refreshes": 0
+    },
+    "panel_visible": {
+      "wall_seconds": 5.001,
+      "cpu_percent_one_core": 0.937,
+      "working_set_mib": 141.64,
+      "private_mib": 94.37,
+      "pet_paints": 53,
+      "toy_paints": 0,
+      "ticks": 53,
+      "mask_rebuilds": 1,
+      "panel_refreshes": 5
+    }
+  },
+  "errors": []
+}

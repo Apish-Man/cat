@@ -1,0 +1,11 @@
+{
+  "process_id": 42016,
+  "elapsed_seconds": 8.025,
+  "logical_cpus": 16,
+  "cpu_percent_one_core": 0.0,
+  "cpu_percent_whole_machine": 0.0,
+  "working_set_mib": 77.77,
+  "private_mib": 45.07,
+  "scenario": "Final packaged desktop companion; control center unopened",
+  "responding": true
+}

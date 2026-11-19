@@ -1,0 +1,16 @@
+# Local import backup
+/.local-import/
+/CAT.rar
+
+# Python and OS files
+.venv/
+__pycache__/
+*.log
+*.pyc
+.pytest_cache/
+.DS_Store
+
+# Windows build and release output
+/build/
+/dist/
+/release-staging/

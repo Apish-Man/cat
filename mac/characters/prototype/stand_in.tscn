@@ -1,0 +1,36 @@
+[gd_scene format=3]
+
+[sub_resource type="StandardMaterial3D" id="Fur"]
+albedo_color = Color(0.91, 0.57, 0.26, 1)
+
+[sub_resource type="SphereMesh" id="Body"]
+material = SubResource("Fur")
+radius = 0.6
+height = 1.2
+
+[sub_resource type="CylinderMesh" id="Ear"]
+material = SubResource("Fur")
+top_radius = 0.0
+bottom_radius = 0.22
+height = 0.5
+radial_segments = 3
+
+[node name="StandIn" type="Node3D"]
+
+[node name="Body" type="MeshInstance3D" parent="."]
+position = Vector3(0, 0.61, 0)
+scale = Vector3(1.1, 0.95, 0.7)
+mesh = SubResource("Body")
+
+[node name="Head" type="MeshInstance3D" parent="."]
+position = Vector3(0.34, 1.24, 0.08)
+scale = Vector3(0.7, 0.65, 0.72)
+mesh = SubResource("Body")
+
+[node name="EarLeft" type="MeshInstance3D" parent="."]
+position = Vector3(0.10, 1.65, 0.08)
+mesh = SubResource("Ear")
+
+[node name="EarRight" type="MeshInstance3D" parent="."]
+position = Vector3(0.55, 1.65, 0.08)
+mesh = SubResource("Ear")

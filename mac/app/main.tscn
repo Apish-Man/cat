@@ -1,0 +1,23 @@
+[gd_scene format=3]
+
+[ext_resource type="PackedScene" path="res://characters/prototype/stand_in.tscn" id="1"]
+[ext_resource type="Script" path="res://app/main.gd" id="2"]
+
+[node name="CatMate" type="Node3D"]
+script = ExtResource("2")
+
+[node name="Camera" type="Camera3D" parent="."]
+position = Vector3(0, 1.0, 4)
+projection = 1
+size = 2.8
+current = true
+
+[node name="Light" type="DirectionalLight3D" parent="."]
+rotation_degrees = Vector3(-32, 22, 0)
+light_energy = 1.25
+
+[node name="Fill" type="DirectionalLight3D" parent="."]
+rotation_degrees = Vector3(0, -55, 0)
+light_energy = 0.55
+
+[node name="Character" parent="." instance=ExtResource("1")]

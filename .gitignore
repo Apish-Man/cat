@@ -14,3 +14,8 @@ __pycache__/
 /build/
 /dist/
 /release-staging/
+
+# Godot import cache and export credentials
+/mac/.godot/
+/mac/.godot-cache/
+/mac/export_credentials.cfg

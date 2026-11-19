@@ -6,6 +6,8 @@
 
 ## 准备版本
 
+下面以 Windows 便携版为例。Mac 预览使用独立的应用版本号、导出配置和 arm64 验收流程，详见 [Mac 预览版实现方案](implementation-v1.3.0-alpha.1.md)。
+
 修复递增补丁号（例如 1.2.1），新增兼容功能递增次版本号（例如 1.3.0）。同步更新 `catmate/__init__.py`、README 和 `docs/releases/v版本号.md`，将改动合入 `main`。在选定的提交上创建标签，例如 `git tag -a v1.2.1 -m "CatMate v1.2.1"`。
 
 在干净的 Windows x64 工作目录检出这个标签，按 README 的「构建与验证」运行构建、单元测试、Qt 检查及独立 EXE 检查。运行下面的 PowerShell 命令打包，版本号取自已检出的标签。

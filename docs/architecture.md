@@ -15,6 +15,8 @@
 
 ## 目标架构
 
+首个 Mac 预览的模块契约、开发依赖和放行条件见 [v1.3.0-alpha.1 实现方案](implementation-v1.3.0-alpha.1.md)。
+
 Mac 预览版采用独立的 Godot 4 应用。行为逻辑使用 GDScript，角色场景通过 AnimationTree 混合动作。macOS 桥接建议用 GDExtension 加 Objective-C++ 接入 AppKit。第一阶段先验证透明窗口、点击命中和常驻能耗，再锁定 Godot 小版本、渲染后端和最低系统版本。[AnimationTree](https://docs.godotengine.org/en/stable/tutorials/animation/animation_tree.html) · [GDExtension](https://docs.godotengine.org/en/stable/tutorials/scripting/gdextension/what_is_gdextension.html)
 
 ```mermaid

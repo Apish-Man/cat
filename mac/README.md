@@ -23,7 +23,7 @@ open dist/mac/CatMate.app
 
 模型和动作的可编辑源文件见[内置橘猫](characters/golden/README.md)。构建脚本将引擎和依赖许可打入应用的 Contents/Resources/Godot-LICENSE.txt，再完成本地签名。
 
-性能复测在开发机上执行 `GODOT_BIN=/path/to/Godot python3 tools/measure_macos.py`。它复制已导出的应用，使用相同的 release 二进制和角色资源，替换测试入口以固定待机或持续散步。空桌面、待机、散步各采样十分钟，原始 top 记录和帧间隔摘要保存至 build/macos-qa/performance。验收详情见[开发机验证记录](../docs/validation/macos-v1.3.0-alpha.1.md)。
+性能复测在开发机上执行 `GODOT_BIN=/path/to/Godot python3 tools/measure_macos.py`。它复制已导出的应用，使用相同的 release 二进制和角色资源，替换测试入口以固定待机或持续散步。空桌面、待机、散步各采样十分钟，原始 top 记录、进程能量和唤醒计数、帧间隔摘要保存至 build/macos-qa/performance。使用 `python3 tools/summarize_macos.py build/macos-qa/performance` 汇总。验收详情见[开发机验证记录](../docs/validation/macos-v1.3.0-alpha.1.md)。
 
 在指定版本的干净检出中构建后，可在仓库根目录打包并核验 ZIP（终端使用 Bash 或 zsh）。
 

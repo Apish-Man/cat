@@ -17,10 +17,17 @@ REPORT = ROOT / "build" / "macos-qa" / "performance"
 SECONDS = 600
 
 
+def read_usage(helper, pid):
+    values = json.loads(subprocess.check_output([helper, str(pid)], text=True))
+    return {"monotonic_s": time.monotonic(), **values}
+
+
 def run_benchmark():
     REPORT.mkdir(parents=True, exist_ok=True)
     with tempfile.TemporaryDirectory(prefix="catmate-measure-") as folder:
         work = Path(folder)
+        helper = work / "macos_usage"
+        subprocess.run(["cc", "-Os", ROOT / "tools/macos_usage.c", "-o", helper], check=True)
         project = work / "mac"
         shutil.copytree(ROOT / "mac", project, ignore=shutil.ignore_patterns(".godot", ".DS_Store"))
         config = project / "project.godot"
@@ -45,12 +52,15 @@ def run_benchmark():
         for mode in ("idle", "walk"):
             result = REPORT / (mode + ".json")
             print(mode, flush=True)
-            with subprocess.Popen([binary, "--", mode, str(SECONDS + 5), result]) as pet:
+            with subprocess.Popen([binary, "--", mode, str(SECONDS + 20), result]) as pet:
                 try:
                     time.sleep(1)
+                    first = read_usage(helper, pet.pid)
                     with (REPORT / (mode + ".top")).open("w") as log:
                         subprocess.run(["top", "-l", "61", "-s", "10", "-pid", str(pet.pid),
                                         "-stats", "pid,cpu,mem,power,idlew"], stdout=log, check=True)
+                    last = read_usage(helper, pet.pid)
+                    (REPORT / (mode + "-usage.json")).write_text(json.dumps([first, last]) + "\n")
                     if pet.wait(timeout=30) or json.loads(result.read_text())["mode"] != mode:
                         raise RuntimeError("Incomplete benchmark: " + mode)
                 finally:

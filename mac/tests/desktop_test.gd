@@ -49,14 +49,22 @@ func run() -> void:
 	runtime.prefs.scale_value = 1.0
 	runtime._resize()
 	var old_size: Vector2i = root.size
-	runtime._menu_action(2)
+	runtime.menu.id_pressed.emit(2)
 	check(root.size.x > old_size.x, "size action changes OS window")
-	runtime._menu_action(3)
+	runtime.menu.id_pressed.emit(3)
 	check(runtime.prefs.eco, "power preference")
-	runtime._menu_action(0)
+	runtime.motion.cancel_input()
+	runtime._process(1.0 / 60.0)
+	check(Engine.max_fps == 6, "eco idle frame cap")
+	runtime.motion.move_to(runtime.motion.bounds.get_center())
+	runtime._process(1.0 / 60.0)
+	check(Engine.max_fps == 30, "eco walking frame cap")
+	runtime.menu.id_pressed.emit(0)
 	check(runtime.motion.position.is_equal_approx(runtime.motion.bounds.get_center()), "locate")
 	var registered: bool = NativeMenu.has_feature(NativeMenu.FEATURE_POPUP_MENU) and runtime.indicator.get_rect().size.x > 0
 	check(registered, "native menu bar item registered")
+	check(runtime.indicator.get_node(runtime.indicator.menu) == runtime.menu, "status item owns the command menu")
+	check(runtime.menu.get_item_text(runtime.menu.get_item_index(4)) == "退出猫在", "quit command available")
 	# The development scene uses the same desktop input and motion owner.
 	runtime.remove_child(character)
 	character.free()

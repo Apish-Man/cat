@@ -1,109 +1,88 @@
-# 猫在 · 写实桌面小猫
+# 猫在 · CatMate
 
-当前版本 **1.2**：修复走路叠影。步态改为离线制作的 24 个清晰形变帧，走路、起停和转向均不叠加两张猫咪照片；移除额外像素抖动，使用 60/30 Hz 的稳定刷新节拍。保留六套换装、右键大小调节、右键快捷启动、省电及三种不同玩具行为。
+**猫在**是一只住在 Windows 桌面上的写实金渐层。它会散步、舔毛、伸懒腰，也会在你专注时趴下来睡觉。双击小猫即可打开中文小屋，喂食、换装、玩玩具，或开启工作计时。
 
-根据 [原始需求](需求.txt) 和猫咪装扮参考照片实现的 Windows 桌宠。写实金渐层、透明置顶窗口、奶油色中文小屋，离线运行，本地存档。
+Windows 10 1903+ / Windows 11（x64） · Python + PySide6 · 版本 **1.2.0**
 
-## 直接使用
+![猫在 1.2 的散步与扑跳演示](docs/previews/motion-v1.2.gif)
 
-在 Windows 上，解压便携包后双击 `CatMate/CatMate.exe`。发布版自带 Python 和 Qt，迁移时请复制 **整个 CatMate 文件夹**。从源码启动时，先运行项目根目录的 **setup.cmd**，再双击 **启动猫在.cmd**。
+[猫咪小屋](docs/previews/home.png) · [换装](docs/previews/wardrobe.png) · [工作记录](docs/previews/work.png) · [六套服装动作](docs/previews/costume-actions.png)
 
-- 双击小猫：打开猫咪小屋。
-- 右键小猫：摸头、睡觉、唤醒、找图标睡、结束玩耍、快捷启动、猫咪大小、省电模式、固定位置和退出。
-- 大小：右键 → 猫咪大小，可选常用比例或自定义 50%–175%；小屋偏好设置中的滑块也可调节，自动保存。缩放尽量保持脚底位置。
-- 启动软件：右键 → 快捷启动 → 软件名；小屋的快捷启动页用于添加/移除软件，不必先打开小屋再启动。
-- 光标轻抚头部或单击：摸头；按住拖动：拎起；松开：放下。
-- 托盘猫咪图标：打开小屋、定位小猫、快捷启动软件、退出。
-- 关闭小屋窗口：小猫继续留在桌面。退出请使用右键或托盘菜单。
-- 设置 → “登录 Windows 时叫醒小猫”：开启或关闭登录启动。默认关闭，可自行开启。
+## 功能
 
-## 已实现
+- **桌面陪伴**　小猫在透明置顶窗口里活动，会根据时段和精力切换习性，也可以到桌面图标上方睡觉。支持摸头、拖拎、固定位置、50%–175% 缩放和省电模式。
+- **三种玩具**　点击桌面抛毛线球，小猫有时会把球叼走。移动鼠标可以用逗猫棒引它扑跳，或让它追踪激光笔红点。
+- **喂食与换装**　新存档有 200 枚猫爪币，可用来兑换食物、玩具和装扮。六套服装适配走路、睡觉、扑跳等动作，生日、圣诞、元旦和春节可领取相应套装。
+- **工作与专注**　手动开始计时，可设时薪、查看预计收入和导出 CSV。工作每满一分钟获得 2 枚猫爪币，完成一轮专注获得 50 枚。可设喝水与休息提醒。
+- **快捷启动**　从右键菜单或系统托盘打开常用软件。支持添加 `.exe` 和 `.lnk`、查找已安装的豆包及打开豆包网页版。可在偏好设置里开启 Windows 登录启动。
 
-| 需求 | 实现 |
-| --- | --- |
-| 写实猫咪 | AI 生成透明摄影风格金渐层动作素材，不使用卡通猫 |
-| 随机习性 | 发呆、高傲、撒娇、犯困、睡觉、舔毛、伸懒腰、散步；精力、时段影响概率 |
-| 开机醒来 | 启动时播放醒来动作；可选 Windows 登录启动 |
-| 桌面互动 | 透明置顶、猫咪外区域可点击桌面、拖拎、摸头、缩放、固定位置、跟随鼠标 |
-| 找图标睡觉 | 读取 Explorer 桌面图标边界并挪到图标上方；不修改文件或图标位置 |
-| 毛线球 | 抛球、重力反弹、追球、拨弄、随机叼走；不会像羽毛一样连续扑跳 |
-| 逗猫棒 | 跟随羽毛、蹲伏蓄力、弧线扑跳、伸爪跃起及落地缓冲；移动鼠标可以反复引诱它扑过去 |
-| 激光笔 | 快速追逐红点、伸爪试探、找寻消失的红点；不会叼起激光或执行羽毛扑跳 |
-| 食物 | 小鱼干、冻干、猫条、猫粮；购买、背包、喂食、饱腹和心情变化 |
-| 装扮 | 六套服装分别制作 16 个穿着动作，并有专用扑跳图；正面、侧走、睡觉、伸懒腰、舔毛、拖拎和吃饭均适配 |
-| 节日 | 生日、12 月 24–26 日、元旦和正月初一至初七领取相应套装；每年每款限领一次 |
-| 工作记录 | 开始/结束上班、实时计时、自定义时薪、累计预计收入、七日记录、导出全部 CSV |
-| 积分 | 新存档 200 币；工作每满一分钟 +2 币；完整专注一轮 +50 币 |
-| 提醒和专注 | 可设置喝水/工作休息间隔，专注倒计时、暂停、继续、结束、完成通知 |
-| 启动软件 | 自动查找豆包、自选 exe/lnk、托盘快速打开、豆包网页版入口 |
-| 存档 | 每 15 秒和关键操作自动保存；原子写入、损坏存档备份、单实例运行 |
+## 快速开始
 
-猫咪不会因长时间不打开软件而死亡。收入是按你设置的时薪计算的估算值，与工资系统无连接；猫爪币仅为本地应用积分。
+**已有 Windows 便携包**时，解压后双击 `CatMate.exe`。便携包已包含 Python 和 Qt，迁移时请复制整个 `CatMate` 文件夹。
 
-## 计时规则
-
-工作和专注由你手动开始。默认离开电脑五分钟后自动暂停，回来后恢复；可以在偏好设置里关闭此规则。电脑休眠和程序关闭期间不计时、不产生收益。结束软件后，下次启动须重新开始上班或专注，避免忘记下班导致计时失真。未满一分钟的工作积分进度保留。
-
-工作记录按本地日期分开存储；调整时薪只影响之后的计时，不重算历史收入。专注不自动开启上班计时；专注时小猫会安静睡觉。取消未完成的一轮不获得 50 币。
-
-毛线球互动期间，桌面左键点击也会抛球；玩具窗口本身不拦截桌面点击。结束互动后恢复正常陪伴。按 Esc 或右键 → 结束玩耍即可停止。
-
-## 存档和日志
-
-默认：`%LOCALAPPDATA%/CatMate/save.json`。日志：同目录 `catmate.log`。设置中可打开存档目录。迁移时先退出程序，再复制整个存档文件夹。程序不访问聊天记录，不上传存档，不调用大模型服务。仅在你点击软件或网站入口时启动对应程序/浏览器。
-
-命令行：
-
-```powershell
-dist\CatMate\CatMate.exe --quiet
-dist\CatMate\CatMate.exe --data-dir E:\CatSave
-dist\CatMate\CatMate.exe --quit
-```
-
-`--quiet` 只显示小猫，`--data-dir` 使用独立存档，`--quit` 退出同一存档下的实例。重复启动同一存档只会唤起现有小屋。
-
-## 流畅度与资源占用
-
-- 默认：走动/扑跳最高约 60 次/秒刷新，静止约 12 次/秒，睡觉 8 次/秒；窗口不可见时降至 1 次/秒。使用按秒计算的速度、加速和刹停，步态随实际移动距离变化，换动作有短暂过渡。
-- 省电：右键小猫 → 省电模式，或偏好设置中开启；走动约 30 次/秒，静止约 6 次/秒，睡觉 2 次/秒。积分与计时精度不受动画帧率影响。
-- 小屋首次打开时才创建，隐藏/最小化后停止界面刷新；右键调大小和启动软件不会创建小屋。隐藏玩具不再绘制；命中区域按动作复用；绘图缓存最多 8 MiB；服装动作按需加载，只保留当前一套原始动作图。
-- 最终正式 EXE 仅显示桌宠、未打开小屋时，本机实测工作集约 **78 MiB**，存档正常、日志为空。走动、穿衣和打开小屋后会增加占用；隔离测试中穿衣走动约 104 MiB、穿衣扑跳约 113 MiB、展开小屋约 145 MiB。16 逻辑处理器机器上，默认走动/激光互动的进程 CPU 时间折算约为整机 0.33% / 0.62%。这些是本机短时测量，不是固定上限；右键省电模式可进一步减少移动刷新开销。
-
-完整方法、原始测量与前后对照见 `docs/performance-v1.1.md`。动作预览：`docs/previews/motion-v1.1.gif`；六套衣服不同动作：`docs/previews/costume-actions.png`。
-
-## 开发与验证
-
-本次在 Windows 10 x64、Python 3.14.7、PySide6 Essentials 6.12.0、PyInstaller 6.22.3 上构建。建议使用 Windows 10/11 x64。
-
-`catmate/` 是应用代码，`assets/` 是运行素材，`tests/` 是业务和运动单元测试，`tools/` 包含素材制作、验证和打包工具，`docs/` 收录验证记录和预览。
-
-在 Windows PowerShell 中运行以下命令。构建结果位于 `dist/CatMate/`。
+**从源码运行**时，请安装 Python 3.14 x64，并在项目根目录打开 PowerShell。
 
 ```powershell
 python -m venv .venv
-.venv\Scripts\python -m pip install -r requirements-dev.txt
-.venv\Scripts\python -m unittest discover -s tests -v
-.venv\Scripts\python tools\verify_ui.py
-.venv\Scripts\python tools\verify_animation.py
-.venv\Scripts\python tools\verify_walk.py
-.\build.cmd
-.venv\Scripts\python tools\verify_release.py
+.\.venv\Scripts\python.exe -m pip install -r requirements.txt
+.\.venv\Scripts\python.exe main.py
 ```
 
-`tests/test_model.py` 检查积分、物品、专注、提醒、跨日/离开/休眠计时和存档异常恢复。`tests/test_motion.py` 检查移动、扑跳和帧调度。这两组测试可在 macOS 和 Windows 使用 Python 3.14 运行，均只需要标准库。Qt 界面、动画和步态验证使用独立临时存档，并会更新 `docs/previews/` 中的预览。`tools/verify_release.py` 在 PATH 无 Python/Qt 的条件下验证打包 EXE 的启动、保存、单实例和退出。
+也可先双击 [`setup.cmd`](setup.cmd)，安装完成后双击 [`启动猫在.cmd`](启动猫在.cmd)。
 
-构建规格会排除 PATH 中其他软件提供的 ICU 同名 DLL，使用 Windows 自带 ICU；避免打包后出现 QtCore DLL 找不到过程的问题。运行环境需提供 Windows 系统 ICU（Windows 10 1903 及之后）。
+| 操作 | 效果 |
+| --- | --- |
+| 双击小猫 | 打开猫咪小屋 |
+| 单击或轻抚头部 | 摸头 |
+| 按住小猫拖动 | 拎起并移动小猫 |
+| 右键小猫 | 调大小、切换省电模式、快捷启动软件或退出 |
+| 玩耍时按 `Esc` | 结束玩耍 |
+| 关闭小屋 | 小猫继续留在桌面，可从托盘再次打开小屋 |
 
-## 当前边界
+## 存档与计时
 
-这是 2D 写实帧动画桌宠，效果不等同于实拍视频或完整 3D 骨骼动画。1.2 的走路使用离线几何形变得到的清晰单帧，取消会导致双腿/双轮廓的照片叠化；其它安静姿态仍有短暂过渡。服装逐动作适配。
+Windows 默认存档路径为 `%LOCALAPPDATA%\CatMate\save.json`，日志在同一目录的 `catmate.log`。应用会定期保存，并在关键操作后写入存档。迁移前请退出小猫，再复制整个存档目录。核心功能可离线使用，存档保存在本地。
 
-步态资源位于 `assets/walk/`，每套 24 帧；`tools/bake_walk.py` 可离线重建，开发依赖在 `requirements-assets.txt`。OpenCV、NumPy、Pillow 不在桌宠中运行或打包。修复验证见 `docs/verification-v1.2.md`，新的动画预览为 `docs/previews/motion-v1.2.gif`。
+工作和专注默认在电脑闲置五分钟后暂停，回来后恢复。电脑休眠期间暂停计时，退出后再次运行需手动开始。工作记录按本地日期归档，修改时薪只影响之后的记录。预计收入按自设时薪计算，猫爪币是应用内积分。
 
-图标依托 Explorer 桌面 ListView 实现；隐藏桌面图标、第三方桌面、多屏不同缩放或系统拒绝读取时可能无法找到图标，会退回普通位置睡觉。全屏独占游戏不保证覆盖显示。节日春节日期内置 2026–2030 年，之后元旦、圣诞和生日继续有效，春节表需要更新。
+源码入口和便携版均支持 `--quiet`（只显示小猫）、`--data-dir`（指定存档目录）和 `--quit`（退出使用同一存档目录的实例）。
 
-## 素材与开源
+## 构建与验证
 
-猫咪与服饰采用内置 image_gen 生成，参考用户提供的猫咪照片和针织装扮；程序无需 API Key。项目素材位于 `assets/`，基础提示词记录在 `docs/asset-prompts.json`，逐动作服装位于 `assets/dressed/`，对应提示词 `docs/action-outfit-prompts.json`；扑跳素材及提示词为 `assets/pounces-atlas.png`、`docs/pounce-prompt.json`。
+维护者可参考[分支、版本标签和 GitHub 发布流程](docs/releasing.md)。本版的下载与升级说明见 [v1.2.0 发布说明](docs/releases/v1.2.0.md)。
 
-研究过 [Litrudy/DesktopPet](https://github.com/Litrudy/DesktopPet)、[LGaben/Desktop-Pets](https://github.com/LGaben/Desktop-Pets) 等项目；本项目没有复制这些仓库的代码或卡通精灵，直接依赖 Qt/PySide6 开发。Qt/PySide6 官方许可证和第三方信息见 [Qt for Python licenses](https://doc.qt.io/qtforpython-6/licenses.html)。阴阳历日期来源参考 [香港天文台公农历对照表](https://www.hko.gov.hk/en/gts/time/conversion.htm)。详细依赖声明在 `THIRD_PARTY_NOTICES.md`。
+在 Windows x64 上，于项目根目录运行以下命令。`build.cmd` 会安装开发依赖，并用 PyInstaller 生成 `dist\CatMate\CatMate.exe`。
+
+```powershell
+python -m venv .venv
+.\build.cmd
+.\.venv\Scripts\python.exe -m unittest discover -s tests -v
+.\.venv\Scripts\python.exe tools\verify_ui.py
+.\.venv\Scripts\python.exe tools\verify_animation.py
+.\.venv\Scripts\python.exe tools\verify_walk.py
+.\.venv\Scripts\python.exe tools\verify_release.py
+```
+
+单元测试只依赖 Python 标准库。Qt 验证脚本使用临时存档，并生成界面、动画或步态预览。`verify_release.py` 检查便携包的启动、存档和单实例行为。
+
+| 路径 | 内容 |
+| --- | --- |
+| [`catmate/`](catmate/) | 应用代码、桌宠窗口、动画、界面和存档 |
+| [`assets/`](assets/) | 角色、服装、步态素材和应用图标 |
+| [`tests/`](tests/) | 业务逻辑、存档和运动单元测试 |
+| [`tools/`](tools/) | 验证、打包和离线素材生成脚本 |
+| [`docs/`](docs/) | 功能验证记录、性能数据和预览 |
+
+## 版本与兼容性
+
+1.2.0 修复了走路、起停和转向时的叠影。裸猫和六套服装各有 24 个步态帧，走动时默认以约 60 Hz 刷新，省电模式降至约 30 Hz。步态素材可用 [`tools/bake_walk.py`](tools/bake_walk.py) 离线重建，依赖列在 [`requirements-assets.txt`](requirements-assets.txt)。[1.2 验证记录](docs/verification-v1.2.md) · [性能测试方法与数据](docs/performance-v1.1.md)
+
+图标旁睡觉依赖 Windows Explorer。读取不到图标时，小猫会在普通位置睡觉。全屏独占应用可能遮住桌宠。春节套装的日期表目前覆盖 2026–2030 年。
+
+## 素材与第三方许可
+
+写实猫咪与服装素材由 AI 按项目参考照片生成。项目保留了[原始需求](需求.txt)以及[基础素材](docs/asset-prompts.json)、[逐动作服装](docs/action-outfit-prompts.json)和[扑跳素材](docs/pounce-prompt.json)的生成提示词。
+
+Qt、PySide6、Python 和 PyInstaller 的许可详见 [第三方声明](THIRD_PARTY_NOTICES.md)及 [`licenses/`](licenses/)。
+
+开发时参考了 [DesktopPet](https://github.com/Litrudy/DesktopPet) 和 [Desktop-Pets](https://github.com/LGaben/Desktop-Pets) 的桌宠交互。春节日期参考 [香港天文台公历与农历日期对照表](https://www.hko.gov.hk/en/gts/time/conversion.htm)。
